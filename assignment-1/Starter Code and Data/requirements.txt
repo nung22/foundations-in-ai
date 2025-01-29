@@ -1,3 +1,0 @@
-osmium  # for OSM data
-plotly  # for visualization
-pandas  # required by plotly
