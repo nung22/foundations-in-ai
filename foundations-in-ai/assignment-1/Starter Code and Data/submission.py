@@ -1,3 +1,7 @@
+# Name: Nicholas Ung
+# Email: ung.n@northeastern.edu
+# NUID: 002336960
+
 from typing import List, Tuple
 
 from mapUtil import (
@@ -96,7 +100,7 @@ def getSanJoseShortestPathProblem() -> ShortestPathProblem:
 
     # BEGIN_YOUR_CODE (our solution is 2 lines of code, but don't worry if you deviate from this)
 
-    # Get start location from a known landmark - using northeastern_building
+    # Get start location from a known landmark - using the Northeastern Building
     startLocation = locationFromTag(makeTag("landmark", "northeastern_building"), cityMap)
     # Set end tag to another landmark - going to Starbucks
     endTag = makeTag("landmark", "starbucks")
@@ -133,9 +137,10 @@ class WaypointsShortestPathProblem(SearchProblem):
     def startState(self) -> State:
         # BEGIN_YOUR_CODE 
 
-        # Initialize state with starting location and empty frozenset for visited waypoints
-        # Use frozenset since it's hashable (required for State's memory)
-        return State(self.startLocation, memory=frozenset())
+        # Check if start location satisfies any waypoints
+        start_waypoints = frozenset(tag for tag in self.cityMap.tags[self.startLocation] if tag in self.waypointTags)
+        # Initialize state with starting location and any waypoints it covers
+        return State(self.startLocation, memory=start_waypoints)
 
         # END_YOUR_CODE
 
@@ -158,8 +163,7 @@ class WaypointsShortestPathProblem(SearchProblem):
         # Get all connected locations and their distances
         for nextLoc, distance in self.cityMap.distances[state.location].items():
             # Find any waypointTags at the next location
-            current_waypoints = frozenset(tag for tag in self.cityMap.tags[nextLoc] 
-                                        if tag in self.waypointTags)
+            current_waypoints = frozenset(tag for tag in self.cityMap.tags[nextLoc] if tag in self.waypointTags)
             # Combine previously visited waypoints with new ones
             updated_waypoints = state.memory.union(current_waypoints)
             # Create new state with updated location and waypoints
