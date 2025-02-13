@@ -1,3 +1,7 @@
+# Name: Nicholas Ung
+# Email: ung.n@northeastern.edu
+# NUID: 002336960
+
 import util, math, random
 from collections import defaultdict
 from util import ValueIteration
